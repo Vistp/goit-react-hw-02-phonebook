@@ -19,19 +19,18 @@ class App extends Component {
     }
 
   addContact = data => {
-    // console.log(data);
-    // const idN = nanoid();
-
+    if (this.checkContactName(data.name)) {
+      alert(`${data.name} is already in contacts.`)
+      return
+}
     const contact = {
       name: data.name,
       number: data.number,
       id: nanoid(),
     }
-    // console.log(contact);
     this.setState(({contacts} )=> ({
       contacts: [contact, ...contacts],
     }))
-    console.log(this.state);
   }
   
   deleteContact = contactId => {
@@ -44,50 +43,38 @@ class App extends Component {
     this.setState({ filter: event.currentTarget.value })
     // console.log(this.state);
   }
-  
-
+  checkContactName = name => {
+    return this.state.contacts.find((el) => el.name === name);
+  }
+  getFiltredContacts = () => {
+    const normalizedFilter = this.state.filter.toLowerCase()
+    return this.state.contacts.filter(contact =>
+      contact.name.toLowerCase().includes(normalizedFilter));
+  }
+ 
   render() {
 
-    const filtredContacts = this.state.contacts.filter(contact =>
-      contact.name.toLowerCase().includes(this.state.filter.toLowerCase()));
+    // const filtredContacts = this.state.contacts.filter(contact =>
+    //   contact.name.toLowerCase().includes(this.state.filter.toLowerCase()));
     
+    const filtredContacts = this.getFiltredContacts();
     
     return (
       <div className="App">
         <div className="App-header">
           <h1>Phonebook</h1>
           <Form onSubmit={this.addContact} />
-          <div>
-            <h2>Contacts</h2>
-            <ContactList contacts={filtredContacts} onDeleteContact={ this.deleteContact}/>
-          </div>
-          <Filter value={this.filter} onChange={ this.changeFilter}/>
-
+          <h2>Contacts</h2>
+          <ContactList
+            contacts={filtredContacts}
+            onDeleteContact={this.deleteContact} />
+          <Filter
+            value={this.filter}
+            onChange={this.changeFilter} />
         </div>
       </div>
     )
   }
 }
-
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
 
 export default App;

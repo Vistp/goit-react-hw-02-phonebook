@@ -1,12 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const Filter = ({ value, onChange}) => {
     return (
         <form>
             <label>
-              Поиск<input
+              Find contact by name <input
                 type="text"
-                // name="name"
                 value={value}
                 onChange={onChange}
                 />
@@ -15,4 +15,8 @@ const Filter = ({ value, onChange}) => {
     )
 }
 
+Filter.propTypes = {
+    value: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+}
 export default  Filter;
